@@ -96,3 +96,12 @@ test("social and resource links are absolute https URLs or empty", () => {
     assert.ok(href === "" || /^https:\/\/[^\s]+$/.test(href), `bad href: ${href}`);
   }
 });
+
+test("fonts are self-hosted and exist", () => {
+  const css = fs.readFileSync(path.join(root, "css/styles.css"), "utf8");
+  for (const p of pages) assert.doesNotMatch(html[p], /fonts\.(googleapis|gstatic)\.com/, `${p}: external fonts`);
+  const files = [...css.matchAll(/url\("\.\.\/(fonts\/[^"]+)"\)/g)].map((m) => m[1]);
+  assert.ok(files.length >= 5);
+  for (const f of files) assert.ok(fs.existsSync(path.join(root, f)), `missing ${f}`);
+  assert.doesNotMatch(css, /fonts\.g/);
+});
