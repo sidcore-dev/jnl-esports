@@ -1,0 +1,24 @@
+name: tests
+
+on:
+  pull_request:
+    branches: [main, staging, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Verify generated pages are up to date
+        run: |
+          node build.mjs
+          git diff --exit-code -- '*.html' || (echo "::error::Run 'node build.mjs' and commit the regenerated pages." && exit 1)
+      - name: Run tests
+        run: npm test

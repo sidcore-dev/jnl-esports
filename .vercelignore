@@ -1,0 +1,9 @@
+src
+tests
+scripts
+build.mjs
+.cpanel.yml
+.github
+CONTRIBUTING.md
+README.md
+LICENSE
