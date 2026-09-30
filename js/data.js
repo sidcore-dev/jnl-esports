@@ -9,7 +9,7 @@ window.JL = {
     name: "JNL Esports",
     tagline: "Built to breach. Trained to win.",
     socials: [
-      { label: "X", href: "" },
+      { label: "X", href: "https://x.com/JNLEsports" },
       { label: "YouTube", href: "" },
       { label: "Discord", href: "https://discord.gg/yujC9GwjHk" },
     ],
