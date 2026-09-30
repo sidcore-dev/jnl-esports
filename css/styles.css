@@ -183,7 +183,8 @@ p { margin: 0 0 1em; }
 
 .announce { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding: 22px 20px; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); margin-bottom: 12px; }
 .announce time { font: 500 13px var(--mono); color: var(--muted); padding-top: 4px; }
-.announce h3 { font-size: 28px; margin-bottom: 6px; }
+.announce > div { min-width: 0; }
+.announce h3 { font-size: 28px; margin-bottom: 6px; overflow-wrap: anywhere; }
 .announce p { margin: 0; color: var(--muted); }
 
 /* About */
@@ -257,6 +258,13 @@ a.resource:hover { border-color: var(--accent); }
   .form { padding: 22px; }
 }
 @media (max-width: 560px) {
+  .roster, .roster tbody { display: block; }
+  .roster thead { display: none; }
+  .roster tr { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  .roster td { display: block; padding: 0; border: 0; }
+  .roster td.designation { grid-column: 1 / -1; }
+  .announce h3 { font-size: 24px; }
+  .page-head h1 { overflow-wrap: anywhere; }
   .tiles { grid-template-columns: 1fr; }
   .hero-tag { font-size: 10px; letter-spacing: 0.1em; padding: 6px 12px; }
   .match-table th:nth-child(3), .match-table td:nth-child(3) { display: none; }

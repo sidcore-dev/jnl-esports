@@ -56,7 +56,13 @@ export function cookie(name, value, { maxAge, req } = {}) {
 
 export function getSession(req) {
   const token = parseCookies(req.headers.cookie)[SESSION_COOKIE];
-  return verifyToken(token);
+  if (!token) return null;
+  try {
+    return verifyToken(token);
+  } catch {
+    // SESSION_SECRET missing or too short: treat every cookie as invalid.
+    return null;
+  }
 }
 
 export function randomState() {
