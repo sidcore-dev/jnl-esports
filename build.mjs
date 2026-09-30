@@ -13,7 +13,7 @@ const PAGES = [
   { key: "news", file: "news.html", src: "news.html", nav: "News", title: "News | JNL Esports", description: "Announcements from JNL Esports." },
   { key: "about", file: "about.html", src: "about.html", nav: "About", title: "About | JNL Esports", description: "About JNL Esports, its leadership and community links." },
   { key: "apply", file: "apply.html", src: "apply.html", nav: null, cta: "Apply", title: "Apply | JNL Esports", description: "Apply for tryouts with JNL Esports. Players aged 16 and older." },
-  { key: "members", file: "members.html", src: "members.html", nav: "Members", soon: true, title: "Members | JNL Esports", description: "Private team area for JNL Esports members.", robots: true, extra: '  <script src="js/members.js"></script>' },
+  { key: "members", file: "members.html", src: "members.html", nav: "Members", soon: true, title: "Members | JNL Esports", description: "Private team area for JNL Esports members.", robots: true, extra: '  <script src="js/members.js" defer></script>' },
 ];
 
 const navLinks = (active) =>
