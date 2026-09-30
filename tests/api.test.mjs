@@ -16,6 +16,7 @@ function call(handler, { method = "POST", body = {}, headers = {} } = {}) {
       status(c) { this.code = c; return this; },
       json(p) { this.payload = p; resolve(this); return this; },
       redirect(c, u) { this.code = c; this.headers.Location = u; resolve(this); },
+      end() { resolve(this); return this; },
     };
     handler({ method, body, headers: { host: "x.test", ...headers }, query: {} }, res);
   });
@@ -103,4 +104,13 @@ test("forged or unconfigured sessions yield 401, never 500", async () => {
   assert.equal(ok.payload.name, "Ann");
   delete process.env.SESSION_SECRET;
   assert.equal(getSession({ headers: { cookie: `jl_session=${good}` } }), null);
+});
+
+test("apply answers CORS preflight only for allowed origins", async () => {
+  const ok = await call(apply, { method: "OPTIONS", headers: { origin: "https://jnlesports.org" } });
+  assert.equal(ok.code, 204);
+  assert.equal(ok.headers["Access-Control-Allow-Origin"], "https://jnlesports.org");
+  const bad = await call(apply, { method: "OPTIONS", headers: { origin: "https://evil.example" } });
+  assert.equal(bad.code, 204);
+  assert.equal(bad.headers["Access-Control-Allow-Origin"], undefined);
 });

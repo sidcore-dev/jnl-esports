@@ -47,7 +47,28 @@ function safeUrl(value) {
   }
 }
 
+const ALLOWED_ORIGINS = new Set([
+  "https://jnlesports.org",
+  "https://www.jnlesports.org",
+  "https://jl-esports.vercel.app",
+]);
+
+// The static site can be hosted on another domain (cPanel) and post here.
+function applyCors(req, res) {
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Max-Age", "86400");
+  }
+}
+
 export default async function handler(req, res) {
+  applyCors(req, res);
+  if (req.method === "OPTIONS") return res.status(204).end();
+
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ ok: false, error: "Method not allowed" });
