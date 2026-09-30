@@ -7,8 +7,8 @@ export const memberContent = {
     // { date: "2026-10-01", title: "Title", body: "Details for members." },
   ],
   schedule: [
-    { day: "Weekdays", time: "To be announced", activity: "Scrims" },
-    { day: "Weekends", time: "To be announced", activity: "VOD review" },
+    { day: "Weekdays", time: "Soon", activity: "Scrims" },
+    { day: "Weekends", time: "Soon", activity: "VOD review" },
   ],
   resources: [
     // { title: "Strategy document", description: "Attack and defense plans.", href: "https://..." },

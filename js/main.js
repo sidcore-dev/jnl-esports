@@ -38,7 +38,7 @@
           "aria-selected": String(g.id === selected),
           "aria-disabled": String(!active),
         }, [el("span", { text: g.short })]);
-        if (!active) tab.firstChild.append(el("i", { class: "tag", text: "Planned" }));
+        if (!active) tab.firstChild.append(el("i", { class: "tag", text: "Soon" }));
         tab.addEventListener("click", () => {
           if (!active) return;
           selected = g.id;
@@ -51,10 +51,10 @@
   }
 
   function playerRow(p, i) {
-    const tbd = p.handle === "To be announced";
+    const tbd = p.handle === "Soon";
     return el("tr", {}, [
       el("td", { text: String(i + 1).padStart(2, "0") }),
-      el("td", { class: tbd ? "tbd" : "handle", text: p.handle }),
+      tbd ? el("td", { class: "tbd" }, [el("span", { class: "soon-chip", text: "Soon" })]) : el("td", { class: "handle", text: p.handle }),
       el("td", { text: p.role }),
       el("td", { class: "designation", text: p.designation || "" }),
     ]);
@@ -65,7 +65,7 @@
     if (!panel) return;
     const team = teams[selected];
     const game = games.find((g) => g.id === selected);
-    if (!team) return panel.replaceChildren(notice("Roster to be announced", "Details will be published here."));
+    if (!team) return panel.replaceChildren(notice("Soon", "Roster details will be published here."));
     const head = el("div", { class: "team-head" }, [
       el("h2", { text: team.name }),
       el("span", { class: "team-meta", text: `${game.name} / ${team.region}` }),
@@ -80,7 +80,7 @@
   function renderMatches() {
     const host = $("#match-list");
     if (!host) return;
-    if (!matches.length) return host.replaceChildren(notice("No matches scheduled", "Fixtures and results will be published here."));
+    if (!matches.length) return host.replaceChildren(notice("Soon", "Fixtures and results will be published here."));
     const body = matches.map((m) => row([m.date, `JNL vs ${m.opponent}`, m.event, el("td", { class: `result ${m.result}`, text: m.result })]));
     host.replaceChildren(
       el("table", { class: "match-table" }, [el("thead", {}, [row(["Date", "Match", "Event", "Result"], "th")]), el("tbody", {}, body)])
@@ -120,7 +120,7 @@
         const live = Boolean(r.href);
         return el(live ? "a" : "div", live ? { class: "resource", href: r.href, rel: "noopener" } : { class: "resource off" }, [
           el("strong", { text: r.title }),
-          el("span", { text: live ? r.description : `${r.description} Link coming soon.` }),
+          live ? el("span", { text: r.description }) : el("span", {}, [document.createTextNode(`${r.description} `), el("span", { class: "soon-chip", text: "Soon" })]),
         ]);
       })
     );
@@ -135,7 +135,15 @@
     if (lead && region) region.textContent = lead.region === "North America" ? "NA" : lead.region;
     if (lead && size) size.textContent = String(lead.players.length);
     const socials = $("#socials");
-    if (socials) socials.replaceChildren(...org.socials.map((s) => el("a", { href: s.href, rel: "noopener", text: s.label })));
+    if (socials) {
+      socials.replaceChildren(
+        ...org.socials.map((s) =>
+          s.href
+            ? el("a", { href: s.href, rel: "noopener", text: s.label })
+            : el("span", { class: "off" }, [document.createTextNode(`${s.label} `), el("span", { class: "soon-chip", text: "Soon" })])
+        )
+      );
+    }
     const gameSelect = $("#join-game");
     if (gameSelect) gameSelect.replaceChildren(...activeGames.map((g) => el("option", { value: g.id, text: g.name })));
   }
