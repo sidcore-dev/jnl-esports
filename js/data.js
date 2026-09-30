@@ -10,6 +10,7 @@ window.JL = {
     tagline: "Built to breach. Trained to win.",
     socials: [
       { label: "X", href: "https://x.com/JNLEsports" },
+      { label: "TikTok", href: "https://www.tiktok.com/@jnlesports" },
       { label: "YouTube", href: "" },
       { label: "Discord", href: "https://discord.gg/yujC9GwjHk" },
     ],
@@ -49,6 +50,8 @@ window.JL = {
   // Public links. Leave href empty until the link exists.
   resources: [
     { title: "Discord server", description: "Community, tryouts and announcements.", href: "https://discord.gg/yujC9GwjHk" },
+    { title: "X", description: "News and match updates.", href: "https://x.com/JNLEsports" },
+    { title: "TikTok", description: "Clips and highlights.", href: "https://www.tiktok.com/@jnlesports" },
     { title: "YouTube", description: "Match VODs and highlights.", href: "" },
   ],
 
