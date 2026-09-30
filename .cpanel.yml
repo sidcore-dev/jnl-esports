@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    # Copies the public site into public_html. The api/, src/ and build files
+    # stay in the repo but are not served (api/ needs Vercel, see README).
+    - export DEPLOYPATH=$HOME/public_html/
+    - /bin/cp -R index.html roster.html matches.html news.html about.html apply.html members.html css js img $DEPLOYPATH

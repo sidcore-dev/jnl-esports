@@ -1,0 +1,66 @@
+    <section class="page-head">
+      <div class="wrap">
+        <p class="label">// Tryouts</p>
+        <h1>Apply to join</h1>
+        <p class="muted">Tryouts are open to players aged 16 and older. Applications are reviewed by team leadership and we will contact you on Discord.</p>
+      </div>
+    </section>
+    <section class="section tight">
+      <div class="wrap narrow">
+        <form class="form" id="join-form" novalidate>
+          <fieldset>
+            <legend>Player information</legend>
+            <div class="grid-2">
+              <label>In-game handle<input name="handle" required autocomplete="off" maxlength="40"></label>
+              <label>Discord username<input name="discord" required autocomplete="off" maxlength="40"></label>
+              <label>Age<input name="age" type="number" inputmode="numeric" min="16" max="99" required><small>Applicants must be 16 or older.</small></label>
+              <label>Time zone<input name="timezone" required autocomplete="off" maxlength="40" placeholder="e.g. EST, PST"></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Competitive profile</legend>
+            <div class="grid-2">
+              <label>Game<select name="game" id="join-game"></select></label>
+              <label>Platform
+                <select name="platform" required>
+                  <option value="">Select</option>
+                  <option>PC</option><option>PlayStation</option><option>Xbox</option>
+                </select>
+              </label>
+              <label>Preferred role
+                <select name="role" required>
+                  <option value="">Select</option>
+                  <option>Entry</option><option>Support</option><option>Anchor</option><option>Flex</option><option>In-game leader</option><option>Open to any role</option>
+                </select>
+              </label>
+              <label>Current rank
+                <select name="rank" required>
+                  <option value="">Select</option>
+                  <option>Unranked</option><option>Copper</option><option>Bronze</option><option>Silver</option><option>Gold</option><option>Platinum</option><option>Emerald</option><option>Diamond</option><option>Champion</option>
+                </select>
+              </label>
+            </div>
+            <label>Profile or tracker link <span class="opt">(optional)</span><input name="tracker" type="url" maxlength="200" placeholder="https://"></label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Experience</legend>
+            <label>Competitive experience
+              <textarea name="experience" required rows="4" maxlength="600" placeholder="Previous teams, leagues, tournaments and results."></textarea>
+            </label>
+            <label>Weekly availability
+              <textarea name="availability" required rows="3" maxlength="300" placeholder="Days and hours you can commit to practice and matches."></textarea>
+            </label>
+            <label>Why do you want to join JNL Esports?
+              <textarea name="motivation" required rows="4" maxlength="600"></textarea>
+            </label>
+          </fieldset>
+
+          <label class="check"><input type="checkbox" name="confirm" required> I confirm that I am 16 years of age or older and that the information provided is accurate.</label>
+          <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn" type="submit">Submit application</button>
+          <p class="form-note" id="form-note" role="status"></p>
+        </form>
+      </div>
+    </section>
