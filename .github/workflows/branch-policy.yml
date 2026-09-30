@@ -1,0 +1,68 @@
+name: branch-policy
+
+# Enforces branch naming and which branch each type may merge into.
+# See CONTRIBUTING.md for the full workflow.
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    branches: [main, staging, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  branch-policy:
+    name: branch-policy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch names and target
+        env:
+          HEAD: ${{ github.head_ref }}
+          BASE: ${{ github.base_ref }}
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$1"; exit 1; }
+
+          slug='[a-z0-9]+(-[a-z0-9]+)*'
+          semver='[0-9]+\.[0-9]+\.[0-9]+'
+
+          # Promotion flow: develop -> staging -> main
+          if [[ "$HEAD" == "develop" ]]; then
+            [[ "$BASE" == "staging" ]] || fail "develop may only be promoted into staging."
+            exit 0
+          fi
+          if [[ "$HEAD" == "staging" ]]; then
+            [[ "$BASE" == "main" ]] || fail "staging may only be promoted into main."
+            exit 0
+          fi
+
+          type="${HEAD%%/*}"
+          name="${HEAD#*/}"
+          [[ "$HEAD" == */* ]] || fail "Branch '$HEAD' must be named <type>/<name>."
+
+          case "$type" in
+            feature|fix|refactor|perf|test|docs|chore|ci)
+              [[ "$name" =~ ^$slug$ ]] || fail "Name '$name' must be lowercase-kebab-case."
+              [[ "$BASE" == "develop" ]] || fail "$type/* branches must target develop, not $BASE."
+              ;;
+            release)
+              [[ "$name" =~ ^$semver$ ]] || fail "release branches must be release/<major.minor.patch>."
+              [[ "$BASE" == "main" ]] || fail "release/* branches must target main, not $BASE."
+              ;;
+            hotfix)
+              [[ "$name" =~ ^$slug$ ]] || fail "Name '$name' must be lowercase-kebab-case."
+              [[ "$BASE" == "main" ]] || fail "hotfix/* branches must target main, not $BASE."
+              ;;
+            experiment)
+              fail "experiment/* branches are throwaway and must never be merged."
+              ;;
+            *)
+              fail "Unknown branch type '$type'. Allowed: feature fix hotfix release refactor perf test docs chore ci experiment."
+              ;;
+          esac
+
+          # PR title becomes the squash commit message.
+          re='^(feat|fix|refactor|perf|test|docs|chore|ci)(\([a-z0-9-]+\))?: .{3,}'
+          [[ "$TITLE" =~ $re ]] || fail "PR title must be '<type>: <description>' (types: feat fix refactor perf test docs chore ci)."
