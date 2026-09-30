@@ -5,6 +5,7 @@
 
 <IfModule mod_expires.c>
   ExpiresActive On
+  ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType image/webp "access plus 1 week"
   ExpiresByType image/png "access plus 1 week"
   ExpiresByType text/css "access plus 5 minutes"
