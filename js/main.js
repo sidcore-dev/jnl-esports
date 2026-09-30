@@ -2,6 +2,10 @@
   const { org, games, teams, matches, announcements, staff, resources } = window.JL;
   const $ = (sel, root = document) => root.querySelector(sel);
 
+  // The form posts to the Vercel API. On other hosts (cPanel) use it cross-origin.
+  const onVercel = /(^|\.)vercel\.app$/.test(location.hostname) || location.hostname === "localhost";
+  const API_BASE = onVercel ? "" : "https://jl-esports.vercel.app";
+
   // Build DOM with textContent so data can never inject markup.
   function el(tag, props = {}, children = []) {
     const node = document.createElement(tag);
@@ -182,7 +186,7 @@
       submit.disabled = true;
       show("Submitting...", false);
       try {
-        const res = await fetch("/api/apply", {
+        const res = await fetch(`${API_BASE}/api/apply`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
